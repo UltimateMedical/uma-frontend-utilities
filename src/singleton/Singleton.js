@@ -1,4 +1,4 @@
-var Singleton = (function () {
+export const Singleton = (function () {
  
   // Instance stores a reference to the Singleton
   var instance;
@@ -37,8 +37,6 @@ var Singleton = (function () {
   };
  
 })();
-
-export default Singleton;
  
  
 // Usage:
