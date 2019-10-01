@@ -1,3 +1,3 @@
-export * from './footnotes';
-export * from './shortcode-parser';
-export * from './singleton';
+export * from './lib/footnotes';
+export * from './lib/shortcode-parser';
+export * from './lib/singleton';
