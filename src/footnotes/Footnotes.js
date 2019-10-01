@@ -8,23 +8,23 @@ export class Footnotes {
     this.getFootnotes = this.getFootnotes.bind(this);
   }
   
-  count = function() {
+  count() {
     return this.footnotes.length;
   }
   
-  add = function(fn) {
+  add(fn) {
     let id = this.count() + 1;
     this.footnotes.push({id: id, text: fn});
   }
 
-  addGlobal = function(key) {
+  addGlobal(key) {
     key = key.toLowerCase();
     if ( globalFootnotes.hasOwnProperty(key) ) {
       this.add(globalFootnotes[key]);
     }
   }
 
-  getFootnotes = function() {
+  getFootnotes() {
     if ( this.footnotes.length > 0 ) {
       return this.footnotes;
     }
