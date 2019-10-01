@@ -37,6 +37,8 @@ var Singleton = (function () {
   };
  
 })();
+
+export default Singleton;
  
  
 // Usage:
