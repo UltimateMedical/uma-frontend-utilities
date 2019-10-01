@@ -7,20 +7,20 @@ export class Singleton {
   }
 
   get(key) {
-    return typeof bag[key] !== undefined ? bag[key] : null;
+    return typeof this.bag[key] !== undefined ? this.bag[key] : null;
   }
 
   set(key, value) {
-    bag[key] = value;
+    this.bag[key] = value;
   }
  
   // Get the Singleton instance if one exists
   // or create one if it doesn't
   getInstance() {
-    if ( !instance ) {
-      instance = init();
+    if ( !this.instance ) {
+      this.instance = init();
     }
-    return instance;
+    return this.instance;
   }
  
 }
