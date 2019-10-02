@@ -47,12 +47,14 @@ export class ShortcodeParser {
         // handle the data
         if ( typeof shortcodeObject.function !== 'undefined' ) {
           this.hooks.forEach(hook => {
-            hook.parse(shortcodeObject, match, originalMatch);
+            content = hook.parse(content, shortcodeObject, match, originalMatch);
           });
         }
   
       });
     }
+
+    return content;
   }
 
   extend(hook) {
