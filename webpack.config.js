@@ -2,22 +2,22 @@ const path = require('path');
 
 module.exports = {
   mode: 'production',
-  entry: './index.js',
+  entry: './index.ts',
   output: {
     path: path.resolve('dist'),
-    filename: 'index.js',
+    filename: 'bundle.js',
     libraryTarget: 'commonjs2',
   },
   module: {
     rules: [
       {
-        test: /\.js?$/,
+        test: /\.tsx?$/,
         exclude: /(node_modules)/,
-        use: 'babel-loader',
+        use: 'ts-loader',
       },
     ],
   },
   resolve: {
-    extensions: ['.js'],
+    extensions: ['.tsx', '.ts', '.js'],
   },
 };

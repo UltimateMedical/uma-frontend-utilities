@@ -1,20 +1,34 @@
+
+
+interface ShortcodeParserExtension {
+  parse( content: string, shortcodeObject : object, match: string, originalMatch: string ) : string
+}
+
+interface shortcodeObject {
+  function: string
+  text: string
+}
+
 export class ShortcodeParser {
 
+  extensions: Array<ShortcodeParserExtension>;
+
+
   constructor() {
-    this.hooks = [];
+    this.extensions = [];
     this.parse = this.parse.bind(this);
     this.extend = this.extend.bind(this);
   }
 
-  parse(content) {
+  parse( content:string ) {
     if ( ! content ) {
       return content;
     }
   
-    let shortcodeObject,
-        regex,
-        matches,
-        originalMatch;
+    let shortcodeObject: shortcodeObject,
+        regex: RegExp,
+        matches: Array<string>,
+        originalMatch: string;
   
     // get regex matches
     regex = RegExp(/{{\s*(.*?)\s*}}/g);
@@ -46,8 +60,8 @@ export class ShortcodeParser {
   
         // handle the data
         if ( typeof shortcodeObject.function !== 'undefined' ) {
-          this.hooks.forEach(hook => {
-            content = hook.parse(content, shortcodeObject, match, originalMatch);
+          this.extensions.forEach(extension => {
+            content = extension.parse(content, shortcodeObject, match, originalMatch);
           });
         }
   
@@ -57,8 +71,8 @@ export class ShortcodeParser {
     return content;
   }
 
-  extend(hook) {
-    this.hooks.push(hook);
+  extend(extension: ShortcodeParserExtension) {
+    this.extensions.push(extension);
   }
 
 }
