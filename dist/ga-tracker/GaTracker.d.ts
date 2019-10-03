@@ -2,14 +2,14 @@ interface GaTargetConfiguration {
     selector: string;
     firingEvents: Array<string>;
     argsForGa: Array<string>;
-    reselectOnMutation?: Boolean;
+    fetchOnMutation?: Boolean;
 }
 interface GaTargetCollection {
     selector: string;
     gaTargets: Array<GaTarget>;
     argsForGa: Array<string>;
     firingEvents: Array<string>;
-    reselectOnMutation: Boolean;
+    fetchOnMutation: Boolean;
 }
 interface GaTarget {
     node: Element;
@@ -19,6 +19,7 @@ interface GaTarget {
     gaAction: string;
     gaLabel: string;
     firingEvents: Array<string>;
+    getArgsForGa(): Array<string>;
 }
 declare class GaTracker {
     DEBUG: Boolean;

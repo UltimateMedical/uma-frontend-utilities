@@ -12,6 +12,7 @@
     "webpack-cli": "^3.3.9"
   },
   "scripts": {
-    "build": "webpack --mode production"
+    "build": "webpack --mode production",
+    "develop": "webpack --mode development"
   }
 }

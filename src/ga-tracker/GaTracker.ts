@@ -2,7 +2,7 @@ interface GaTargetConfiguration {
   selector: string
   firingEvents: Array<string>
   argsForGa: Array<string>
-  reselectOnMutation?: Boolean
+  fetchOnMutation?: Boolean
 }
 
 interface GaTargetCollection {
@@ -10,7 +10,7 @@ interface GaTargetCollection {
   gaTargets: Array<GaTarget>
   argsForGa: Array<string>
   firingEvents: Array<string>
-  reselectOnMutation: Boolean
+  fetchOnMutation: Boolean
 }
 
 interface GaTarget {
@@ -21,6 +21,7 @@ interface GaTarget {
   gaAction: string
   gaLabel: string 
   firingEvents: Array<string>
+  getArgsForGa(): Array<string>
 }
 
 class GaTracker  {
@@ -99,8 +100,13 @@ class GaTracker  {
     }
 
     // create an array of GaTargetCollections
-    this.gaTargetCollections = this.gaTargetConfigurations.map(gaTargetConfig => {
-      return this.createGaTargetCollection(gaTargetConfig);
+    let gaTargetCollection;
+
+    this.gaTargetConfigurations.forEach(gaTargetConfig => {
+      gaTargetCollection = this.createGaTargetCollection(gaTargetConfig);
+      if(gaTargetCollection.gaTargets.length) {
+        this.gaTargetCollections.push(gaTargetCollection);
+      }
     });
 
     if (this.observeForMutations) {
@@ -123,14 +129,23 @@ class GaTracker  {
   // when DOM changes are detected within the specified
   // parent wrapper
   onParentWrapperUpdate(mutations: Array<MutationRecord>, observer: MutationObserver) {
-    console.log('mutation: ', mutations);
+    mutations.forEach(mutation => {
+      mutation.addedNodes.forEach(node => {
+        this.gaTargetConfigurations.forEach(gaTargetConfig => {
+          if(gaTargetConfig.fetchOnMutation) {
+            if(document.querySelector(gaTargetConfig.selector) === node) {
+              this.gaTargetCollections.push(this.createGaTargetCollection(gaTargetConfig));
+            }
+          }
+        });
+      });
+    });
   }
 
   // handle the gaEventConfig configuration
   createGaTargetCollection(gaTargetConfiguration: GaTargetConfiguration) {
 
     let nodes: Array<Element>,
-        gaTarget: GaTarget,
         gaTargetCollection: GaTargetCollection;
 
     nodes = Array.prototype.slice.call(document.querySelectorAll(gaTargetConfiguration.selector));
@@ -141,14 +156,10 @@ class GaTracker  {
       selector: gaTargetConfiguration.selector,
       firingEvents: gaTargetConfiguration.firingEvents,
       argsForGa: gaTargetConfiguration.argsForGa,
-      reselectOnMutation: gaTargetConfiguration.reselectOnMutation || false,
+      fetchOnMutation: gaTargetConfiguration.fetchOnMutation || false,
 
       // create an array of gaTargets
-      gaTargets: nodes.map(node => {
-        gaTarget = this.createGaTargetInstance(node, gaTargetConfiguration);
-        this.addEventListeners(gaTarget);
-        return gaTarget;
-      })
+      gaTargets: nodes.map(node => this.createGaTargetInstance(node, gaTargetConfiguration))
     };
 
     return gaTargetCollection;
@@ -178,7 +189,7 @@ class GaTracker  {
 
     let handle = () => {
       if (this.DEBUG) {
-        console.log('gaTarget: ', gaTarget);
+        console.log('gaTarget: ', gaTarget.getArgsForGa());
       }
       else {
         // @ts-ignore
@@ -200,6 +211,9 @@ class GaTracker  {
 
     if (nodeLabel) {
       gaLabel = gaTarget.gaLabel.replace(/{{\s*label\s*}}/gi, nodeLabel);
+    }
+    else {
+      gaLabel = gaTarget.gaLabel.replace(/{{\s*label\s*}}/gi, '');
     }
 
     return gaLabel;
