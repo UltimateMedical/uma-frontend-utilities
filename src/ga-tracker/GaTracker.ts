@@ -98,6 +98,8 @@ class GaTracker  {
       });
     }
 
+    console.log('init: ', this);
+
     // create an array of GaTargetCollections
     this.gaTargetCollections = this.gaTargetConfigurations.map(gaTargetConfig => {
       return this.createGaTargetCollection(gaTargetConfig);
@@ -155,6 +157,7 @@ class GaTracker  {
   }
 
   createGaTargetInstance(node: Element, config: GaTargetConfiguration) {
+    console.log('createGaTargetInstance: ', config);
     let gaTarget = {
       node: node,
       firingEvents: config.firingEvents,
