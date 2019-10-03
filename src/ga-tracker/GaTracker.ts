@@ -1,26 +1,34 @@
 interface GaTargetConfiguration {
   selector: string
-  firing_events: Array<string>
-  args_for_ga: Array<string>
-  reselect_on_mutation?: Boolean
+  firingEvents: Array<string>
+  argsForGa: Array<string>[5]
+  reselectOnMutation?: Boolean
 }
 
 interface GaTargetCollection {
   selector: string
-  nodes: Array<Element>
-  reselect_on_mutation: Boolean
+  gaTargets: Array<GaTarget>
+  argsForGa: Array<string>[5]
+  firingEvents: Array<string>
+  reselectOnMutation: Boolean
 }
 
 interface GaTarget {
-  node: HTMLElement
+  node: Element
+  gaCommand: string
+  gaType: string
+  gaCategory: string
+  gaAction: string
+  gaLabel: string 
+  firingEvents: Array<string>
 }
 
-export class GaTracker  {
+class GaTracker  {
 
   DEBUG: Boolean;
   gaTargetConfigurations: Array<GaTargetConfiguration>
-  parentToObserve: HTMLElement
-  trackedDomElements: Array<HTMLElement>
+  observeForMutations: Element
+  gaTargetCollections: Array<GaTargetCollection> = [];
 
   /**
    * constructor
@@ -48,13 +56,13 @@ export class GaTracker  {
      * Specify the parent to observe for DOM changes.
      * 
      */
-    this.parentToObserve = null;
+    this.observeForMutations = null;
 
     /**
      * The elements we are tracking.
      * 
      */
-    this.trackedDomElements = [];
+    this.gaTargetCollections = [];
 
 
     /**
@@ -65,8 +73,9 @@ export class GaTracker  {
     this.parentWrapperObserver = this.parentWrapperObserver.bind(this);
     this.onParentWrapperUpdate = this.onParentWrapperUpdate.bind(this);
     this.createGaTargetCollection = this.createGaTargetCollection.bind(this);
-    this.handleDomElement = this.handleDomElement.bind(this);
-    this.getGaArguments = this.getGaArguments.bind(this);
+    this.createGaTargetInstance = this.createGaTargetInstance.bind(this);
+    this.addEventListeners = this.addEventListeners.bind(this);
+    this.getNodeGaLabel = this.getNodeGaLabel.bind(this);
   }
 
 
@@ -79,40 +88,29 @@ export class GaTracker  {
    * @param {object} config
    * @return {void}
    */
-  init(config=null) {
-
-    // initialize variables used in this function
-    let gaTargetCollections: Array<GaTargetCollection> = [];
+  init(config: {DEBUG: false, observeForMutations: null, gaTargetConfigurations: Array<GaTargetConfiguration>}) {
 
     // take care of configuration settings
     if ( config ) {
       Object.keys(config).forEach(key => {
+        // @ts-ignore
         this[key] = config[key];
       });
     }
 
     // create an array of GaTargetCollections
-    this.gaTargetConfigurations.forEach(gaTargetConfig => {
-      gaTargetCollections.push(this.createGaTargetCollection(gaTargetConfig));
+    this.gaTargetCollections = this.gaTargetConfigurations.map(gaTargetConfig => {
+      return this.createGaTargetCollection(gaTargetConfig);
     });
 
-    
-
-    if (this.parentToObserve) {
+    if (this.observeForMutations) {
       this.observeParentWrapper();
     }
   }
 
-
-  /**
-   | ---------------------------------------------------
-   | Functionality
-   | ---------------------------------------------------
-   */
-
   // observe the specified parent wrapper for DOM changes
   observeParentWrapper() {
-    this.parentWrapperObserver().observe(this.parentToObserve, {
+    this.parentWrapperObserver().observe(this.observeForMutations, {
       childList: true
     });
   }
@@ -124,135 +122,90 @@ export class GaTracker  {
 
   // when DOM changes are detected within the specified
   // parent wrapper
-  onParentWrapperUpdate(mutations, observer) {
-    this.gaEventConfigs.forEach(this.handleClickable);
+  onParentWrapperUpdate(mutations: Array<MutationRecord>, observer: MutationObserver) {
+    console.log('mutation: ', mutations);
   }
 
   // handle the gaEventConfig configuration
   createGaTargetCollection(gaTargetConfiguration: GaTargetConfiguration) {
 
-    let gaTargetsCollection = {
+    let nodes: Array<Element>,
+        gaTarget: GaTarget,
+        gaTargetCollection: GaTargetCollection;
+
+    nodes = Array.prototype.slice.call(document.querySelectorAll(gaTargetConfiguration.selector));
+
+    gaTargetCollection = {
+
+      // set these group properties
       selector: gaTargetConfiguration.selector,
-      firing_events: gaTargetConfiguration.firing_events,
-      nodes: [...document.querySelectorAll(gaTargetConfiguration.selector)],
-      reselect_on_mutation: gaTargetConfiguration.reselect_on_mutation || false
+      firingEvents: gaTargetConfiguration.firingEvents,
+      argsForGa: gaTargetConfiguration.argsForGa,
+      reselectOnMutation: gaTargetConfiguration.reselectOnMutation || false,
+
+      // create an array of gaTargets
+      gaTargets: nodes.map(node => {
+        gaTarget = this.createGaTargetInstance(node, gaTargetConfiguration);
+        this.addEventListeners(gaTarget);
+        return gaTarget;
+      })
     };
 
-    return gaTargetsCollection;
-
-    try {
-
-      currentClickable.events = clickable.events;
-
-      if (selectorIsId) {
-        domElements = document.getElementById(clickable.id);
-        if (domElements) {
-          domElements.currentClickableConfig = currentClickable;
-          self.handleDomElement(domElements);
-        }
-      }
-      else {
-        domElements = [...document.querySelectorAll(currentClickable.selector)];
-        domElements.forEach(function(domElement) {
-          domElement.currentClickableConfig = currentClickable;
-          var domAndConfig = {};
-          domAndConfig.currentClickableConfig = currentClickable;
-          domAndConfig.element = domElement;
-          self.handleDomElement(domAndConfig);
-        });
-      }
-
-    }
-    catch (err) {
-      console.log(
-        'There was a problem with your TrackGa configuration in the "clickables" array.\n',
-        err
-      );
-    }
-
+    return gaTargetCollection;
   }
+
+  createGaTargetInstance(node: Element, config: GaTargetConfiguration) {
+    let gaTarget = {
+      node: node,
+      firingEvents: config.firingEvents,
+      gaCommand: config.argsForGa[0],
+      gaType: config.argsForGa[1],
+      gaCategory: config.argsForGa[2],
+      gaAction: config.argsForGa[3],
+      gaLabel: config.argsForGa[4],
+      getArgsForGa: () => {
+        return [gaTarget.gaCommand, gaTarget.gaType, gaTarget.gaCategory, gaTarget.gaAction, gaTarget.gaLabel];
+      }
+    };
+    gaTarget.gaLabel = this.getNodeGaLabel(gaTarget);
+    this.addEventListeners(gaTarget);
+    return gaTarget;
+  }
+
 
   // Handle each DOM element
-  handleDomElement(domAndConfig) {
-    
-    var domElement = domAndConfig.element;
+  addEventListeners( gaTarget: GaTarget ) {
 
-    var self = this;
-
-    if (!domElement) return;
-    if (self.trackedDomElements.includes(domElement)) return;
-
-    var currentClickableConfig = domAndConfig.currentClickableConfig,
-        ga = self.getGaArguments( domElement, currentClickableConfig ),
-        handle, eventName;
-
-    if (!ga) {
-      throw new Error(
-        `Please include a "ga" attribute on the element you wish to track or include 
-        a default in the "clickables" array.`,
-        domElement
-      );
+    let handle = () => {
+      if (this.DEBUG) {
+        console.log('gaTarget: ', gaTarget);
+      }
+      else {
+        // @ts-ignore
+        window.ga(...gaTarget.getArgsForGa());
+      }
     }
 
-
-    if (typeof currentClickableConfig.events === 'string') {
-      currentClickableConfig.events = currentClickableConfig.events.split(' ');
-    }
-
-    if (Array.isArray(currentClickableConfig.events)) {
-      currentClickableConfig.events.forEach(function(event) {
-
-        handle = function(e) {
-          var condition = typeof event.condition === 'function' ? event.condition(e) : true;
-          if (condition) {
-            if (self.config.DEBUG) {
-              console.log('ga: ', ga);
-            }
-            else {
-              window.ga(...ga);
-            }
-          }
-        };
-
-        try {
-          if (typeof event === 'string') {
-            eventName = event;
-          }
-          else if (typeof event === 'object') {
-            eventName = event.name;
-          }
-          domElement.addEventListener(eventName, handle);
-          if (currentClickableConfig.reselect) {
-          } else {
-            self.trackedDomElements.push(domElement);
-          }
-        }
-        catch(err) {
-          console.log(
-            `There was a problem adding an event listener to a DOM element.
-             This is probably because there's an error in your "clickables" config.`,
-            err
-          );
-        }
-      });
-    }
+    gaTarget.firingEvents.forEach(firingEvent => {
+      gaTarget.node.addEventListener(firingEvent, handle);
+    });
 
   }
 
 
-  getGaArguments(domElement, currentClickableConfig) {
+  getNodeGaLabel(gaTarget: GaTarget) {
 
-    let ga = currentClickableConfig.defaultGa,
-        gaLabel = domElement.getAttribute('ga-label');
+    let gaLabel,
+        nodeLabel = gaTarget.node.getAttribute('ga-label');
 
-    if (gaLabel) {
-      ga = ga.map(arg => {
-        return arg.replace(/{{\s*label\s*}}/gi, gaLabel);
-      });
+    if (nodeLabel) {
+      gaLabel = gaTarget.gaLabel.replace(/{{\s*label\s*}}/gi, nodeLabel);
     }
 
-    return ga;
-
+    return gaLabel;
   }
 
 }
+
+const gaTracker = new GaTracker();
+export { gaTracker };
