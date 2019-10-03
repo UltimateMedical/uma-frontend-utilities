@@ -1,14 +1,14 @@
 interface GaTargetConfiguration {
   selector: string
   firingEvents: Array<string>
-  argsForGa: Array<string>[5]
+  argsForGa: Array<string>
   reselectOnMutation?: Boolean
 }
 
 interface GaTargetCollection {
   selector: string
   gaTargets: Array<GaTarget>
-  argsForGa: Array<string>[5]
+  argsForGa: Array<string>
   firingEvents: Array<string>
   reselectOnMutation: Boolean
 }
