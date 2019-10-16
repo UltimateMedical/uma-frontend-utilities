@@ -6,6 +6,7 @@ export interface QueryStringObject {
 export interface QueryStringParamConfig {
   paramName:string;
 	overrideSearch?:RegExp
-	primaryValue?:string
-	defaultValue?:string
+	primaryValue?:string|boolean|number
+  defaultValue?:string|boolean|number
+  omitIfNoValue?:boolean;
 }
