@@ -1,5 +1,5 @@
 import { QueryStringBuilder } from './QueryStringBuilder';
-import { QueryStringObject, QueryStringParamConfig } from './contracts';
+import { QueryStringParamConfig } from './contracts';
 
 let expected = '',
     queryString:string,
