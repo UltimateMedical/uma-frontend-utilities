@@ -1,6 +1,14 @@
-import { QueryStringParser as qsp } from './query-string-parser';
+import { QueryStringBuilder as qsBuilder } from './query-string-utils';
 
-console.log(qsp.getQueryObject(window.location.search));
+let configs = [
+  {
+    paramName: 'key',
+    overrideSearch: /key/gi,
+    defaultValue: 'value'
+  }
+];
+
+console.log(new qsBuilder().withConfig(configs).withOverrides(window.location.search).build().getString());
 
 // function component() {
   

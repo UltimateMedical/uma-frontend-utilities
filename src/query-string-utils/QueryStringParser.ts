@@ -1,9 +1,11 @@
+import { QueryStringObject  } from './contracts';
+
 class QueryStringParser {
 
-  public static getQueryObject(queryString:string): object {
+  public static getQueryObject(queryString:string): Array<QueryStringObject> {
 
     let arrayOfParamStrings:Array<string> = [],
-        arrayOfParamObjects:Array<object> = [];
+        arrayOfParamObjects:Array<QueryStringObject> = [];
 
     if(queryString.charAt(0) === '?') {
       queryString = queryString.substr(1);
