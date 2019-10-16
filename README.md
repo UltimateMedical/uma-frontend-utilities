@@ -44,7 +44,7 @@ Given a query string, the `QueryStringParser` can split it up into an array of `
 
 An example usage might look like:
 
-```
+```javascript
 import { QueryStringParser as qsp } from 'uma-utilities';
 
 const queryString = qsp.getQueryObject(window.location.search);
@@ -57,7 +57,7 @@ string for you.
 
 An example usage might look like: 
 
-```
+```javascript
 import { QueryStringBuilder as qsb } from 'uma-utilities';
 
 const configs = [
