@@ -53,6 +53,9 @@ class QueryStringBuilder {
     let queryString = '';
     
     queryString = queryObjects.reduce((acc, cur) => {
+      if(!cur.value) {
+        return acc + `${cur.key}&`;
+      }
 			return acc + `${cur.key}=${cur.value}&`;
 		}, '?');
     
@@ -65,11 +68,12 @@ class QueryStringBuilder {
 
     let regex = config.overrideSearch || null,
 				paramName = config.paramName,
-				primaryValue = config.primaryValue || null,
-				defaultValue = config.defaultValue || null,
+				primaryValue = typeof config.primaryValue !== 'undefined' ? config.primaryValue.toString() : null,
+        defaultValue = typeof config.defaultValue !== 'undefined' ? config.defaultValue.toString() : null,
+        omitIfNoValue = config.omitIfNoValue || false,
 				urlOverride = false,
 				param:QueryStringObject = {
-					key: paramName,
+					key: encodeURI(paramName.trim()),
 					value: ''
 				};
 
@@ -83,14 +87,14 @@ class QueryStringBuilder {
 		}
 
 		if(!urlOverride && primaryValue) {
-			param.value = encodeURI(primaryValue);
+			param.value = encodeURI(primaryValue.trim());
 		}
 
 		else if(!urlOverride && !primaryValue && defaultValue) {
-			param.value = defaultValue;
+			param.value = encodeURI(defaultValue.trim());
 		}
 
-		if(param.key && param.value) {
+		if(param.key && param.value || param.key && !omitIfNoValue) {
 			return param;
 		}
 		
