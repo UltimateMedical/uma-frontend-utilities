@@ -3,12 +3,13 @@ import { QueryStringBuilder as qsBuilder } from './query-string-utils';
 let configs = [
   {
     paramName: 'key',
-    overrideSearch: /key/gi,
-    defaultValue: 'value'
+    defaultValue: false
   }
 ];
 
 console.log(new qsBuilder().withConfig(configs).withOverrides(window.location.search).build().getString());
+
+
 
 // function component() {
   

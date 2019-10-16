@@ -8,5 +8,5 @@ export interface QueryStringParamConfig {
 	overrideSearch?:RegExp
 	primaryValue?:string|boolean|number
   defaultValue?:string|boolean|number
-  omitIfNoValue?:boolean;
+  omitKeyWithFalsyValue?: { primary?:boolean, default?:boolean }|boolean;
 }

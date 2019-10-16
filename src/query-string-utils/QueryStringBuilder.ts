@@ -66,16 +66,24 @@ class QueryStringBuilder {
 
   protected createQueryObject(config:QueryStringParamConfig) {
 
+    let omitKeyWithFalsyValue = { primary: true, default: false };
+    if(typeof config.omitKeyWithFalsyValue === 'boolean') {
+      omitKeyWithFalsyValue.primary = config.omitKeyWithFalsyValue;
+      omitKeyWithFalsyValue.default = config.omitKeyWithFalsyValue;
+    }
+    else {
+      omitKeyWithFalsyValue = Object.assign(omitKeyWithFalsyValue, config.omitKeyWithFalsyValue);
+    }
+
     let regex = config.overrideSearch || null,
 				paramName = config.paramName,
-				primaryValue = typeof config.primaryValue !== 'undefined' ? config.primaryValue.toString() : null,
-        defaultValue = typeof config.defaultValue !== 'undefined' ? config.defaultValue.toString() : null,
-        omitIfNoValue = config.omitIfNoValue || false,
+        primaryValue = config.primaryValue,
+        defaultValue = config.defaultValue,
 				urlOverride = false,
-				param:QueryStringObject = {
+				param = {
 					key: encodeURI(paramName.trim()),
-					value: ''
-				};
+          value: '',
+        };
 
 		if(regex) {
 			this.overrideQueryObjects.forEach(queryObject => {
@@ -84,21 +92,46 @@ class QueryStringBuilder {
 					urlOverride = true;
 				}
 			});
+    }
+
+		if(!urlOverride) {
+      if(omitKeyWithFalsyValue.primary && this.isFalsy(primaryValue)) {
+        primaryValue = false;
+      }
+      else {
+        primaryValue = typeof primaryValue !== 'undefined' ? String(primaryValue) : '';
+        param.value = encodeURI(primaryValue.trim());
+        primaryValue = true;
+      }
 		}
 
-		if(!urlOverride && primaryValue) {
-			param.value = encodeURI(primaryValue.trim());
+		if(!urlOverride && !primaryValue) {
+      if(omitKeyWithFalsyValue.default && this.isFalsy(defaultValue)) {
+        defaultValue = false;
+      }
+      else {
+        defaultValue = typeof defaultValue !== 'undefined' ? String(defaultValue) : '';
+        param.value = encodeURI(defaultValue.trim());
+        defaultValue = true;
+      }
 		}
 
-		else if(!urlOverride && !primaryValue && defaultValue) {
-			param.value = encodeURI(defaultValue.trim());
-		}
-
-		if(param.key && param.value || param.key && !omitIfNoValue) {
+		if(urlOverride || primaryValue || defaultValue) {
 			return param;
 		}
 		
 		return null;
+  }
+
+  public isFalsy(value:string|number|boolean) {
+    if(
+      value === 'undefined' || value === null || 
+      value === 0 || value === false || value === '' ||
+      typeof value === 'undefined'
+    ) {
+      return true;
+    }
+    return false;
   }
 
 }
