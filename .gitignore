@@ -3,3 +3,4 @@ package-lock.json
 .ideas/*
 .DS_Store
 coverage
+dist

@@ -1,15 +1,13 @@
 {
   "compilerOptions": {
-    "declaration": true,
-    "outDir": "./dist/",
-    "noImplicitAny": true,
-    "module": "es6",
+    "module": "commonjs",
     "target": "es5",
-    "jsx": "react",
-    "sourceMap": true
-    // "allowJs": true
+    "strict": true,
+    "sourceMap": true,
+    "declaration": true,
+    "noImplicitAny": true,
+    "outDir": "./cjs/",
   },
-  "include": [
-    "./src/**/*"
-  ]
+  "include": [ "./src/**/*" ],
+  "exclude": [ "./src/**/*.test.ts" ]
 }

@@ -13,7 +13,8 @@
       "email": "austin.j.herman@gmail.com"
     }
   ],
-  "main": "dist/bundle.js",
+  "main": "dist/main.js",
+  "files": ["dist/**/*"],
   "devDependencies": {
     "@babel/core": "^7.6.4",
     "@babel/preset-env": "^7.6.3",
