@@ -78,7 +78,7 @@ class QueryStringBuilder {
       excludeIfFalsyValue = Object.assign(excludeIfFalsyValue, config.excludeIfFalsyValue);
     }
 
-    let regex = config.excludeIfFalsyValue || null,
+    let regex = config.queryStringOverrideSearch || null,
 				paramName = config.key,
         primaryValue = config.primaryValue,
         defaultValue = config.defaultValue,

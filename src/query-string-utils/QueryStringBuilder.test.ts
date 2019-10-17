@@ -230,7 +230,7 @@ test('override query matches take precedence and are [sic]', () => {
   configs = [
     {
       key: 'test',
-      queryStringqueryStringOverrideSearch: /^test$/gi,
+      queryStringOverrideSearch: /^test$/gi,
       primaryValue: 'primary',
       defaultValue: 'default'
     },
