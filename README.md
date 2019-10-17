@@ -81,6 +81,7 @@ const configs = [
   ];
   
   const queryString = new QueryStringBuilder().withConfig(configs).withOverrides(window.location.search).build().getString();
+  console.log(queryString);
 ```
 
 In this example, `overrideSearch` searches through the `key` values of an array of 
