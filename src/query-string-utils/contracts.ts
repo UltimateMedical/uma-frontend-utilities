@@ -4,9 +4,9 @@ export interface QueryStringObject {
 }
 
 export interface QueryStringParamConfig {
-  paramName:string;
-	overrideSearch?:RegExp
+  key:string;
+	queryStringOverrideSearch?:RegExp
 	primaryValue?:string|boolean|number
   defaultValue?:string|boolean|number
-  omitKeyWithFalsyValue?: { primary?:boolean, default?:boolean }|boolean;
+  excludeIfFalsyValue?: { primary?:boolean, default?:boolean }|boolean;
 }

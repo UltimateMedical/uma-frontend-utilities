@@ -15,15 +15,15 @@ test('forms a valid query string from config object', () => {
 
   configs = [
     {
-      paramName: 'por',
+      key: 'por',
       defaultValue: 'tillos'
     },
     {
-      paramName: 'la',
+      key: 'la',
       defaultValue: 'segunda'
     },
     {
-      paramName: 'wrights',
+      key: 'wrights',
       defaultValue: 'bakery'
     }
   ];
@@ -37,7 +37,7 @@ test('encodes special chars', () => {
 
   configs = [
     {
-      paramName: ' s p a c e s     ',
+      key: ' s p a c e s     ',
       defaultValue: ' s   p   a   c   e   s  '
     }
   ];
@@ -51,11 +51,11 @@ test('handles non string types', () => {
 
   configs = [
     {
-      paramName: 'debug',
+      key: 'debug',
       defaultValue: true
     },
     {
-      paramName: 'portillos_rating',
+      key: 'portillos_rating',
       defaultValue: 10
     },
   ];
@@ -69,27 +69,27 @@ test('doesn\'t omit falsy values by default', () => {
   
   configs = [
     {
-      paramName: 'should-be-false',
+      key: 'should-be-false',
       defaultValue: false
     },
     {
-      paramName: 'should-be-null',
+      key: 'should-be-null',
       defaultValue: null
     },
     {
-      paramName: 'should-be-0',
+      key: 'should-be-0',
       defaultValue: 0
     },
     {
-      paramName: 'should-be-undefined',
+      key: 'should-be-undefined',
       defaultValue: 'undefined'
     },
     {
-      paramName: 'should-have-no-value',
+      key: 'should-have-no-value',
       defaultValue: ''
     },
     {
-      paramName: 'should-have-no-value-again',
+      key: 'should-have-no-value-again',
     }
   ];
   
@@ -102,39 +102,39 @@ test('omits falsy values if specified', () => {
 
   configs = [
     {
-      paramName: 'shouldn\'t-be-in-query-string-0',
-      omitKeyWithFalsyValue: true
+      key: 'shouldn\'t-be-in-query-string-0',
+      excludeIfFalsyValue: true
     },
     {
-      paramName: 'shouldn\'t-be-in-query-string-1',
+      key: 'shouldn\'t-be-in-query-string-1',
       defaultValue: '',
-      omitKeyWithFalsyValue: true
+      excludeIfFalsyValue: true
     },
     {
-      paramName: 'shouldn\'t-be-in-query-string-2',
+      key: 'shouldn\'t-be-in-query-string-2',
       defaultValue: false,
-      omitKeyWithFalsyValue: true
+      excludeIfFalsyValue: true
     },
     {
-      paramName: 'shouldn\'t-be-in-query-string-3',
+      key: 'shouldn\'t-be-in-query-string-3',
       primaryValue: false,
-      omitKeyWithFalsyValue: true
+      excludeIfFalsyValue: true
     },
     {
-      paramName: 'sbiqs-0',
+      key: 'sbiqs-0',
       primaryValue: false,
       defaultValue: false,
-      omitKeyWithFalsyValue: {
+      excludeIfFalsyValue: {
         primary: true,
         default: false
       }
     }
     ,
     {
-      paramName: 'sbiqs-1',
+      key: 'sbiqs-1',
       primaryValue: false,
       defaultValue: false,
-      omitKeyWithFalsyValue: {
+      excludeIfFalsyValue: {
         primary: false,
         default: true
       }
@@ -149,7 +149,7 @@ test('omits falsy values if specified', () => {
 test('primary overrides default', () => {
 
   configs = [{
-    paramName: 'test',
+    key: 'test',
     primaryValue: 'primary',
     defaultValue: 'default'
   }];
@@ -163,22 +163,22 @@ test('primary falls back to default if falsy', () => {
 
   configs = [
     {
-      paramName: 'test1',
+      key: 'test1',
       primaryValue: '',
       defaultValue: 'default'
     },
     {
-      paramName: 'test2',
+      key: 'test2',
       primaryValue: false,
       defaultValue: 'default'
     },
     {
-      paramName: 'test3',
+      key: 'test3',
       primaryValue: null,
       defaultValue: 'default'
     },
     {
-      paramName: 'test4',
+      key: 'test4',
       primaryValue: 'undefined',
       defaultValue: 'default'
     }
@@ -193,28 +193,28 @@ test('use falsy primaries if you want', () => {
 
   configs = [
     {
-      paramName: 'test1',
+      key: 'test1',
       primaryValue: '',
       defaultValue: 'default',
-      omitKeyWithFalsyValue: false
+      excludeIfFalsyValue: false
     },
     {
-      paramName: 'test2',
+      key: 'test2',
       primaryValue: false,
       defaultValue: 'default',
-      omitKeyWithFalsyValue: false
+      excludeIfFalsyValue: false
     },
     {
-      paramName: 'test3',
+      key: 'test3',
       primaryValue: null,
       defaultValue: 'default',
-      omitKeyWithFalsyValue: false
+      excludeIfFalsyValue: false
     },
     {
-      paramName: 'test4',
+      key: 'test4',
       primaryValue: 'undefined',
       defaultValue: 'default',
-      omitKeyWithFalsyValue: false
+      excludeIfFalsyValue: false
     }
   ];
 
@@ -229,37 +229,37 @@ test('override query matches take precedence and are [sic]', () => {
 
   configs = [
     {
-      paramName: 'test',
-      overrideSearch: /^test$/gi,
+      key: 'test',
+      queryStringqueryStringOverrideSearch: /^test$/gi,
       primaryValue: 'primary',
       defaultValue: 'default'
     },
     {
-      paramName: 'test2',
-      overrideSearch: /^testtwo$|^test_2$|^test2$/gi,
-      primaryValue: 'primary',
-      defaultValue: 'default'
-    }
-    ,
-    {
-      paramName: 'test3',
-      overrideSearch: /^test3$/gi,
-    },
-    {
-      paramName: 'test4',
-      overrideSearch: /^not_there$/gi,
-      omitKeyWithFalsyValue: true,
-    },
-    {
-      paramName: 'test5',
-      overrideSearch: /^not_there_with_primary$/gi,
+      key: 'test2',
+      queryStringOverrideSearch: /^testtwo$|^test_2$|^test2$/gi,
       primaryValue: 'primary',
       defaultValue: 'default'
     }
     ,
     {
-      paramName: 'test6',
-      overrideSearch: /^not_there_with_default$/gi,
+      key: 'test3',
+      queryStringOverrideSearch: /^test3$/gi,
+    },
+    {
+      key: 'test4',
+      queryStringOverrideSearch: /^not_there$/gi,
+      excludeIfFalsyValue: true,
+    },
+    {
+      key: 'test5',
+      queryStringOverrideSearch: /^not_there_with_primary$/gi,
+      primaryValue: 'primary',
+      defaultValue: 'default'
+    }
+    ,
+    {
+      key: 'test6',
+      queryStringOverrideSearch: /^not_there_with_default$/gi,
       defaultValue: 'default'
     }
   ];

@@ -69,17 +69,17 @@ class QueryStringBuilder {
 
   protected createQueryObject(config:QueryStringParamConfig) {
 
-    let omitKeyWithFalsyValue = { primary: true, default: false };
-    if(typeof config.omitKeyWithFalsyValue === 'boolean') {
-      omitKeyWithFalsyValue.primary = config.omitKeyWithFalsyValue;
-      omitKeyWithFalsyValue.default = config.omitKeyWithFalsyValue;
+    let excludeIfFalsyValue = { primary: true, default: false };
+    if(typeof config.excludeIfFalsyValue === 'boolean') {
+      excludeIfFalsyValue.primary = config.excludeIfFalsyValue;
+      excludeIfFalsyValue.default = config.excludeIfFalsyValue;
     }
     else {
-      omitKeyWithFalsyValue = Object.assign(omitKeyWithFalsyValue, config.omitKeyWithFalsyValue);
+      excludeIfFalsyValue = Object.assign(excludeIfFalsyValue, config.excludeIfFalsyValue);
     }
 
-    let regex = config.overrideSearch || null,
-				paramName = config.paramName,
+    let regex = config.excludeIfFalsyValue || null,
+				paramName = config.key,
         primaryValue = config.primaryValue,
         defaultValue = config.defaultValue,
 				urlOverride = false,
@@ -102,7 +102,7 @@ class QueryStringBuilder {
     }
 
 		if(!urlOverride) {
-      if(omitKeyWithFalsyValue.primary && this.isFalsy(primaryValue)) {
+      if(excludeIfFalsyValue.primary && this.isFalsy(primaryValue)) {
         primaryValue = false;
       }
       else {
@@ -113,7 +113,7 @@ class QueryStringBuilder {
 		}
 
 		if(!urlOverride && !primaryValue) {
-      if(omitKeyWithFalsyValue.default && this.isFalsy(defaultValue)) {
+      if(excludeIfFalsyValue.default && this.isFalsy(defaultValue)) {
         defaultValue = false;
       }
       else {
