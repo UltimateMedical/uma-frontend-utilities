@@ -13,7 +13,7 @@
       "email": "austin.j.herman@gmail.com"
     }
   ],
-  "main": "dist/main.js",
+  "main": "dist/main.min.js",
   "files": ["dist/**/*"],
   "devDependencies": {
     "@babel/core": "^7.6.4",

@@ -38,9 +38,12 @@ class QueryStringBuilder {
 
   public build() {
 
-    this.queryObjects = this.configs.map(config => {
-      return this.createQueryObject(config);
-    }).filter(queryObject => queryObject);
+    this.configs.forEach(config => {
+      let queryObject = this.createQueryObject(config);
+      if(queryObject) {
+        this.queryObjects.push(queryObject);
+      }
+    });
 
     this.builtQueryString = this.createQueryString(this.queryObjects);
 
@@ -87,6 +90,10 @@ class QueryStringBuilder {
 
 		if(regex) {
 			this.overrideQueryObjects.forEach(queryObject => {
+
+        // @ts-ignore 
+        // `regex` is guaranteed not to be null at this
+        // point. Not sure why TS is throwing an error here.
 				if(queryObject.key.match(regex)) {
 					param.value = queryObject.value;
 					urlOverride = true;
@@ -123,7 +130,7 @@ class QueryStringBuilder {
 		return null;
   }
 
-  public isFalsy(value:string|number|boolean) {
+  public isFalsy(value:string|number|boolean|undefined) {
     if(
       value === 'undefined' || value === null || 
       value === 0 || value === false || value === '' ||
@@ -136,18 +143,4 @@ class QueryStringBuilder {
 
 }
 
-class QueryStringifier {
-
-  private queryObjects:Array<QueryStringObject>;
-  private builtQueryString:string;
-  private configs:Array<QueryStringParamConfig>;
-  private overrideQueryString:string;
-  private overrideQueryObjects:Array<QueryStringObject>;
-
-  static createBuilder() {
-    return new QueryStringBuilder();
-  }
-
-}
-
-export { QueryStringBuilder, QueryStringifier };
+export { QueryStringBuilder };

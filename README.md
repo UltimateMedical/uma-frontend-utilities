@@ -17,10 +17,6 @@ That should be it.
 This command will start up the webpack dev server and provide you with hot reloading
 while developing. Useful for beginning stagings and troubleshooting.
 
-Additionally, in the file called `webpack.config.js`, you can uncomment the 
-line that reads `dev: './src/index.js'` while you are developing. Then you have 
-a nice little sandbox in `./src/index.js`.
-
 ## Testing
 `npm run test`
 This library uses [jest](https://jestjs.io/en/) for testing. It's important before the

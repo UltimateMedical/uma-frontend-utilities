@@ -6,7 +6,7 @@
     "sourceMap": true,
     "declaration": true,
     "noImplicitAny": true,
-    "outDir": "./cjs/",
+    "outDir": "./dist/",
   },
   "include": [ "./src/**/*" ],
   "exclude": [ "./src/**/*.test.ts" ]

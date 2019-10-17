@@ -5,14 +5,13 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 module.exports = {
   mode: process.env.NODE_ENV || 'production',
   entry: {
-    //dev: './src/index.js',
-    queryStringUtils: './src/query-string-utils'
+    main: './src/index.js'
   },
   devtool: 'inline-source-map',
   output: {
     path: path.resolve(__dirname, 'dist'),
-    filename: '[name].bundle.js',
-    libraryTarget: 'umd',
+    filename: '[name].min.js',
+    libraryTarget: 'commonjs',
   },
   module: {
     rules: [
