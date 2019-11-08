@@ -128,8 +128,7 @@ test('omits falsy values if specified', () => {
         primary: true,
         default: false
       }
-    }
-    ,
+    },
     {
       key: 'sbiqs-1',
       primaryValue: false,

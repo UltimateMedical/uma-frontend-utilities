@@ -48,8 +48,8 @@ test('creates an object with empty string as value for a URL param with no value
       value: ""
     },
     {
-      key: "chicken",
-      value: "fillet"
+      key: "daily",
+      value: "eats"
     },
     {
       key: "panera",
@@ -58,7 +58,7 @@ test('creates an object with empty string as value for a URL param with no value
   ];
 
   // test a normal query string ...
-  queryString = "?portillos&chicken=fillet&panera";
+  queryString = "?portillos&daily=eats&panera";
   parsedQuery = QueryStringParser.getQueryObject(queryString);
   expect(parsedQuery).toEqual(expected);
 
