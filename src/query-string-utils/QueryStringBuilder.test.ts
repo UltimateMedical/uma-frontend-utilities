@@ -33,7 +33,7 @@ test('forms a valid query string from config object', () => {
   expect(queryString).toBe(expected);
 });
 
-test('encodes special chars', () => {
+test('does not encode special chars', () => {
 
   configs = [
     {
@@ -42,7 +42,7 @@ test('encodes special chars', () => {
     }
   ];
 
-  expected = '?s%20p%20a%20c%20e%20s=s%20%20%20p%20%20%20a%20%20%20c%20%20%20e%20%20%20s'
+  expected = '? s p a c e s     = s   p   a   c   e   s  '
   queryString = new QueryStringBuilder().withConfig(configs).build().getString();
   expect(queryString).toBe(expected);
 });
