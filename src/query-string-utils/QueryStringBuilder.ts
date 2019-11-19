@@ -84,7 +84,7 @@ class QueryStringBuilder {
         defaultValue = config.defaultValue,
 				urlOverride = false,
 				param = {
-					key: encodeURI(paramName.trim()),
+					key: paramName,
           value: '',
         };
 
@@ -107,7 +107,7 @@ class QueryStringBuilder {
       }
       else {
         primaryValue = typeof primaryValue !== 'undefined' ? String(primaryValue) : '';
-        param.value = encodeURI(primaryValue.trim());
+        param.value = primaryValue;
         primaryValue = true;
       }
 		}
@@ -118,7 +118,7 @@ class QueryStringBuilder {
       }
       else {
         defaultValue = typeof defaultValue !== 'undefined' ? String(defaultValue) : '';
-        param.value = encodeURI(defaultValue.trim());
+        param.value = defaultValue;
         defaultValue = true;
       }
 		}
