@@ -82,3 +82,31 @@ test('a query string with a value of "&"', () => {
   expect(parsedQuery).toEqual(expected);
 
 });
+
+test('.all() method returns all key/value pairs', () => {
+
+  let queryString,
+      parsedQuery;
+
+  // test a normal query string ...
+  queryString = "?test1&test2&test3&test4";
+  parsedQuery = new QueryStringParser(queryString).all();
+  expect(parsedQuery.length).toEqual(4);
+
+});
+
+test('.get() method returns one key/value pair', () => {
+
+  let queryString,
+      parsedQuery;
+
+  // test a normal query string ...
+  queryString = "?test1&test2&test3&test4=test";
+  parsedQuery = new QueryStringParser(queryString).get('test4');
+  expect(parsedQuery.key).toEqual('test4');
+  expect(parsedQuery.value).toEqual('test');
+
+  parsedQuery = new QueryStringParser(queryString).get('not-there');
+  expect(parsedQuery).toEqual(null);
+
+});
