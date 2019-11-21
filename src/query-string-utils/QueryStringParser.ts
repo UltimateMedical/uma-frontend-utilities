@@ -1,6 +1,29 @@
 import { QueryStringObject  } from './contracts';
+import { QueryStringBuilder } from './QueryStringBuilder';
 
 class QueryStringParser {
+
+  private queryString:string
+  private queryObjects:Array<QueryStringObject>
+
+  public constructor(queryString:string) {
+    this.queryString = queryString;
+    this.queryObjects = QueryStringParser.getQueryObject(this.queryString);
+  }
+
+  public all() {
+    return this.queryObjects;
+  }
+
+  public get(key:string) {
+    let result = this.queryObjects.filter(queryObject => {
+      return queryObject.key === key;
+    });
+    if(result.length > 0) {
+      return result[0];
+    }
+    return null;
+  }
 
   public static getQueryObject(queryString:string): Array<QueryStringObject> {
 
