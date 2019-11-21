@@ -43,8 +43,9 @@ An example usage might look like:
 ```javascript
 import { QueryStringParser as qsp } from 'uma-utilities';
 
-const queryString = qsp.getQueryObject(window.location.search);
-console.log(queryString);
+const parser = new qsp(window.location.search);
+console.log(qsp.all());
+console.log(qsp.get('param-name'));
 ```
 
 #### QueryStringBuilder
@@ -58,7 +59,7 @@ import { QueryStringBuilder as qsb } from 'uma-utilities';
 
 const configs = [
     {
-      paramName: 'por',
+      key: 'por',
       defaultValue: 'tillos'
     },
     {
@@ -66,18 +67,36 @@ const configs = [
       defaultValue: 'segunda'
     },
     {
-      paramName: 'wrights',
+      key: 'wrights',
       primaryValue: 'cafe',
       defaultValue: 'bakery'
     },
     {
-      paramName: 'this_param_passed_from_current_page_query',
-      overrideSearch: /^test|tst$/gi
+      key: 'this_param_passed_from_current_page_query',
+      queryStringOverrideSearch: /^test|tst$/gi
+    },
+    {
+      key: 'will-not-show-up-in-query-string',
+      defaultValue: false,
+      excludeIfFalsyValue: true
+    },
+    {
+      key: 'will-not-show-up-in-query-string-2',
+      excludeIfFalsyValue: {
+        primary: true,
+        default: true
+      }
     }
+
   ];
   
+  // get string
   const queryString = new QueryStringBuilder().withConfig(configs).withOverrides(window.location.search).build().getString();
   console.log(queryString);
+
+  // get objects
+  const objects = new QueryStringBuilder().withConfig(configs).withOverrides(window.location.search).build().getObjects();
+  console.log(objects);
 ```
 
 In this example, `overrideSearch` searches through the `key` values of an array of 
