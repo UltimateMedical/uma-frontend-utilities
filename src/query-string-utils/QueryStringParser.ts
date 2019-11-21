@@ -20,7 +20,7 @@ class QueryStringParser {
       return queryObject.key === key;
     });
     if(result.length > 0) {
-      return result[0];
+      return result.pop();
     }
     return null;
   }
