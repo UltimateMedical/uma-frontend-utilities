@@ -95,7 +95,7 @@ test('.all() method returns all key/value pairs', () => {
 
 });
 
-test('.get() method returns one key/value pair', () => {
+test('.get() method returns one value', () => {
 
   let queryString,
       parsedQuery;
@@ -103,8 +103,7 @@ test('.get() method returns one key/value pair', () => {
   // test a normal query string ...
   queryString = "?test1&test2&test3&test4=test";
   parsedQuery = new QueryStringParser(queryString).get('test4');
-  expect(parsedQuery.key).toEqual('test4');
-  expect(parsedQuery.value).toEqual('test');
+  expect(parsedQuery).toEqual('test');
 
   parsedQuery = new QueryStringParser(queryString).get('not-there');
   expect(parsedQuery).toEqual(null);

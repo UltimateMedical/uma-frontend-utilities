@@ -20,7 +20,10 @@ class QueryStringParser {
       return queryObject.key === key;
     });
     if(result.length > 0) {
-      return result.pop();
+      let lastItem = result.pop();
+      if(lastItem) {
+        return lastItem.value;
+      }
     }
     return null;
   }
