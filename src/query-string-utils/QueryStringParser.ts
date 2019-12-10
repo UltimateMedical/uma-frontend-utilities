@@ -1,5 +1,4 @@
 import { QueryStringObject  } from './contracts';
-import { QueryStringBuilder } from './QueryStringBuilder';
 
 class QueryStringParser {
 
@@ -54,4 +53,4 @@ class QueryStringParser {
 
 }
 
-export default QueryStringParser;
+export { QueryStringParser };
