@@ -1,7 +1,7 @@
 {
-  "name": "uma-utilities",
+  "name": "uma-utils",
   "license": "MIT",
-  "version": "0.1.9",
+  "version": "0.2.0-beta",
   "description": "A collection of frontend utilities that we hope are useful.",
   "repository": {
     "type": "git",
@@ -13,10 +13,8 @@
       "email": "austin.j.herman@gmail.com"
     }
   ],
-  "main": "dist/main.min.js",
-  "files": [
-    "dist/**/*"
-  ],
+  "main": "dist/cjs/all.js",
+  "module": "dist/cjs2/all.js",
   "devDependencies": {
     "@babel/core": "^7.6.4",
     "@babel/preset-env": "^7.6.3",
@@ -34,7 +32,7 @@
     "webpack-dev-server": "^3.8.2"
   },
   "scripts": {
-    "build": "webpack --mode production",
+    "build": "webpack --mode production --config ./config/webpack.config.prod.js",
     "develop": "webpack-dev-server --open --mode development",
     "test": "jest",
     "prepare": "npm run build",
