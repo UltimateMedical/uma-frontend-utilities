@@ -1,4 +1,4 @@
-import QueryStringParser from './QueryStringParser';
+import { QueryStringParser } from './QueryStringParser';
 import { QueryStringObject, QueryStringParamConfig } from './contracts';
 
 class QueryStringBuilder {

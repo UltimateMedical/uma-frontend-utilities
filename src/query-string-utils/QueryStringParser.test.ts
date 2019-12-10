@@ -1,4 +1,4 @@
-import QueryStringParser from './QueryStringParser';
+import { QueryStringParser } from './QueryStringParser';
 
 test('turns a query string into an an array of objects with key/value pairs', () => {
 
