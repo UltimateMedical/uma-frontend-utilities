@@ -1,5 +1,4 @@
 const path = require('path');
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
 const common = {
   mode: 'production',
@@ -21,11 +20,6 @@ const common = {
   resolve: {
     extensions: ['.tsx', '.ts', '.js'],
   },
-  plugins: [
-    new CleanWebpackPlugin({
-      cleanOnceBeforeBuildPatterns: ['../dist'],
-    })
-  ],
   stats: "errors-only",
   optimization: {
     splitChunks: {
