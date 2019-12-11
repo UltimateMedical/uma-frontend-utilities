@@ -22,17 +22,17 @@ test('turns a query string into an an array of objects with key/value pairs', ()
 
   // test a normal query string ...
   queryString = "?king=coop&bo=dega&la=segunda";
-  parsedQuery = QueryStringParser.getQueryObject(queryString);
+  parsedQuery = QueryStringParser.parse(queryString);
   expect(parsedQuery).toEqual(expected);
 
   // test a query string without an initial "?"
   queryString = "king=coop&bo=dega&la=segunda";
-  parsedQuery = QueryStringParser.getQueryObject(queryString);
+  parsedQuery = QueryStringParser.parse(queryString);
   expect(parsedQuery).toEqual(expected);
 
   // test a query string with a stray "&" at the end
   queryString = "king=coop&bo=dega&la=segunda&";
-  parsedQuery = QueryStringParser.getQueryObject(queryString);
+  parsedQuery = QueryStringParser.parse(queryString);
   expect(parsedQuery).toEqual(expected);
 
 });
@@ -59,7 +59,7 @@ test('creates an object with empty string as value for a URL param with no value
 
   // test a normal query string ...
   queryString = "?portillos&daily=eats&panera";
-  parsedQuery = QueryStringParser.getQueryObject(queryString);
+  parsedQuery = QueryStringParser.parse(queryString);
   expect(parsedQuery).toEqual(expected);
 
 });
@@ -73,12 +73,12 @@ test('a query string with a value of "&"', () => {
 
   // test a normal query string ...
   queryString = "?&";
-  parsedQuery = QueryStringParser.getQueryObject(queryString);
+  parsedQuery = QueryStringParser.parse(queryString);
   expect(parsedQuery).toEqual(expected);
 
   // test a query string without the "?"
   queryString = "&";
-  parsedQuery = QueryStringParser.getQueryObject(queryString);
+  parsedQuery = QueryStringParser.parse(queryString);
   expect(parsedQuery).toEqual(expected);
 
 });

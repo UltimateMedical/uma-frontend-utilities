@@ -1,61 +1,163 @@
 import QueryStringParser from './parser';
-import { QueryStringObject, QueryStringParamConfig } from './contracts';
+import isFalsy from '../common/functions/isFalsy';
+import KeyValueInterface from '../common/interfaces/keyValueInterface';
+import QueryStringParamConfigInterface from './queryStringParamConfigInterface';
 
+/**
+ * QueryStringBuilder
+ * 
+ * @since 0.0.1
+ */
 class QueryStringBuilder {
 
-  private queryObjects:Array<QueryStringObject>;
+
+  /**
+   * keyValuePairs
+   * 
+   * @property {KeyValueInterface[]} keyValuePairs - The built query string
+   * represented as an array of key/value pairs.
+   */
+  private keyValuePairs:Array<KeyValueInterface>;
+
+
+  /**
+   * builtQueryString
+   * 
+   * @property {String} builtQueryString - The query string that's constructed
+   * from the provided configuration.
+   */
   private builtQueryString:string;
-  private configs:Array<QueryStringParamConfig>;
+
+
+  /**
+   * queryStringConfig
+   * 
+   * @property {QueryStringParamConfigInterface[]} queryStringConfig - An 
+   * array of QueryStringParamConfig. These are the configuration options
+   * used to built a query string.
+   */
+  private queryStringConfig:Array<QueryStringParamConfigInterface>;
+
+
+  /**
+   * overrideQueryString
+   * 
+   * @property {string} overrideQueryString - The query string whose values 
+   * will take precedence over all others - i.e. values in here will end up
+   * in the build query string if specified.
+   */
   private overrideQueryString:string;
-  private overrideQueryObjects:Array<QueryStringObject>;
 
-  public constructor() {
-    this.queryObjects = [];
+
+  /**
+   * overrideKeyValuePairs
+   * 
+   * @property {KeyValueInterface[]} overrideKeyValuePairs - The override
+   * query string represented as an array of key/value pairs.
+   */
+  private overrideKeyValuePairs:Array<KeyValueInterface>;
+
+
+  /**
+   * constructor()
+   * 
+   * @constructor
+   * @param {QueryStringParamConfigInterface[]} queryStringConfig - The array
+   * of configuration options needed to build a query string.
+   */
+  public constructor(queryStringConfig:Array<QueryStringParamConfigInterface>) {
+    this.keyValuePairs = [];
     this.builtQueryString = '';
-    this.configs = [];
+    this.queryStringConfig = queryStringConfig;
     this.overrideQueryString = ''
-    this.overrideQueryObjects = [];
+    this.overrideKeyValuePairs = [];
   }
 
-  public withConfig(configs:Array<QueryStringParamConfig>) {
-    this.configs = configs;
-    return this;
-  }
 
-  public withOverrides(overrideQueryString:string) {
+  /**
+   * withOverrides()
+   * 
+   * @method
+   * @param {string} queryString - A query string
+   * @return {QueryStringBuilder}
+   */
+  public withOverrides(overrideQueryString:string):QueryStringBuilder {
     this.overrideQueryString = overrideQueryString;
-    this.overrideQueryObjects = QueryStringParser.getQueryObject(overrideQueryString);
+    this.overrideKeyValuePairs = QueryStringParser.parse(this.overrideQueryString);
     return this;
   }
 
-  public getString() {
+
+  /**
+   * getString()
+   * 
+   * Returns the query string that's built with the given configuration represented
+   * as a string.
+   * 
+   * @method
+   * @param {void}
+   * @return {string}
+   */
+  public getString():string {
     return this.builtQueryString;
   }
 
-  public getObjects() {
-    return this.queryObjects;
+
+  /**
+   * getKeyValuePairs()
+   * 
+   * Returns the query string that's built with the given configuration represented
+   * as an array of key/value pairs.
+   * 
+   * @method
+   * @param {void}
+   * @return {KeyValueInterface[]}
+   */
+  public getKeyValuePairs():Array<KeyValueInterface> {
+    return this.keyValuePairs;
   }
 
-  public build() {
 
-    this.configs.forEach(config => {
-      let queryObject = this.createQueryObject(config);
-      if(queryObject) {
-        this.queryObjects.push(queryObject);
+  /**
+   * build()
+   * 
+   * Builds the query string and key/value pairs using the given configuration.
+   * 
+   * @method
+   * @param {void}
+   * @return {KeyValueInterface[]}
+   */
+  public build():QueryStringBuilder {
+
+    this.queryStringConfig.forEach(queryStringParamConfig => {
+      let keyValuePair = this.createKeyValuePair(queryStringParamConfig);
+      if(keyValuePair) {
+        this.keyValuePairs.push(keyValuePair);
       }
     });
 
-    this.builtQueryString = this.createQueryString(this.queryObjects);
+    this.builtQueryString = QueryStringBuilder.createQueryString(this.keyValuePairs);
 
     return this;
 
   }
 
-  protected createQueryString(queryObjects:Array<QueryStringObject>) {
+
+  /**
+   * createQueryString()
+   * 
+   * Builds a query string using an array of key/value pairs.
+   * 
+   * @method
+   * @static
+   * @param {KeyValueInterface[]} keyValuePairs
+   * @return {string}
+   */
+  public static createQueryString(keyValuePairs:Array<KeyValueInterface>):string {
 
     let queryString = '';
     
-    queryString = queryObjects.reduce((acc, cur) => {
+    queryString = keyValuePairs.reduce((acc, cur) => {
       if(!cur.value) {
         return acc + `${cur.key}&`;
       }
@@ -67,42 +169,52 @@ class QueryStringBuilder {
 		return queryString;
   }
 
-  protected createQueryObject(config:QueryStringParamConfig) {
 
-    let excludeIfFalsyValue = { primary: true, default: false };
-    if(typeof config.excludeIfFalsyValue === 'boolean') {
-      excludeIfFalsyValue.primary = config.excludeIfFalsyValue;
-      excludeIfFalsyValue.default = config.excludeIfFalsyValue;
+  /**
+   * createKeyValuePair()
+   * 
+   * Compiles a query param config object down to it's key and value.
+   * 
+   * @method
+   * @param {QueryStringParamConfigInterface} config
+   * @return {KeyValueInterface|null}
+   */
+  protected createKeyValuePair(config:QueryStringParamConfigInterface):KeyValueInterface|null {
+
+    let excludeIfFalsy = { primary: true, default: false };
+    if(typeof config.excludeIfFalsy === 'boolean') {
+      excludeIfFalsy.primary = config.excludeIfFalsy;
+      excludeIfFalsy.default = config.excludeIfFalsy;
     }
     else {
-      excludeIfFalsyValue = Object.assign(excludeIfFalsyValue, config.excludeIfFalsyValue);
+      excludeIfFalsy = Object.assign(excludeIfFalsy, config.excludeIfFalsy);
     }
 
-    let regex = config.queryStringOverrideSearch || null,
-				paramName = config.key,
-        primaryValue = config.primaryValue,
-        defaultValue = config.defaultValue,
-				urlOverride = false,
-				param = {
-					key: paramName,
-          value: '',
-        };
+    let regex        = config.override || null,
+				paramName    = config.key,
+        primaryValue = config.primary,
+        defaultValue = config.default,
+				urlOverride  = false,
+				param        = {
+					            key: paramName,
+                      value: '',
+                    };
 
 		if(regex) {
-			this.overrideQueryObjects.forEach(queryObject => {
+			this.overrideKeyValuePairs.forEach(keyValuePair => {
 
         // @ts-ignore 
         // `regex` is guaranteed not to be null at this
         // point. Not sure why TS is throwing an error here.
-				if(queryObject.key.match(regex)) {
-					param.value = queryObject.value;
+				if(keyValuePair.key.match(regex)) {
+					param.value = keyValuePair.value;
 					urlOverride = true;
 				}
 			});
     }
 
 		if(!urlOverride) {
-      if(excludeIfFalsyValue.primary && this.isFalsy(primaryValue)) {
+      if(excludeIfFalsy.primary && isFalsy(primaryValue)) {
         primaryValue = false;
       }
       else {
@@ -113,7 +225,7 @@ class QueryStringBuilder {
 		}
 
 		if(!urlOverride && !primaryValue) {
-      if(excludeIfFalsyValue.default && this.isFalsy(defaultValue)) {
+      if(excludeIfFalsy.default && isFalsy(defaultValue)) {
         defaultValue = false;
       }
       else {
@@ -128,17 +240,6 @@ class QueryStringBuilder {
 		}
 		
 		return null;
-  }
-
-  public isFalsy(value:string|number|boolean|undefined) {
-    if(
-      value === 'undefined' || value === null || 
-      value === 0 || value === false || value === '' ||
-      typeof value === 'undefined'
-    ) {
-      return true;
-    }
-    return false;
   }
 
 }
