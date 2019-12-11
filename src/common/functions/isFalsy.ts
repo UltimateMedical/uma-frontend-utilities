@@ -1,8 +1,9 @@
-export default function(value:string|number|boolean|undefined) {
+export default function(value:any) {
   if(
-    value === 'undefined' || value === null || 
-    value === 0 || value === false || value === '' ||
-    typeof value === 'undefined'
+    value === null      || value === 0           || 
+    value === false     || value === ''          ||
+    value === undefined || value === 'undefined' ||
+    Number.isNaN(value)
   ) {
     return true;
   }
