@@ -35,10 +35,11 @@
     "webpack-dev-server": "^3.8.2"
   },
   "scripts": {
+    "build-npm": "webpack --mode production --config ./config/webpack.config.npm.js",
     "build": "webpack --mode production --config ./config/webpack.config.prod.js",
     "develop": "webpack-dev-server --open --mode development --config ./config/webpack.config.dev.js",
     "test": "jest",
-    "prepare": "npm run build && cp ./dist/cjs2/* .",
+    "prepare": "npm run build-npm && cp ./dist/cjs2/* .",
     "preversion": "npm test",
     "postversion": "git push && git push --tags"
   },
