@@ -1,4 +1,4 @@
-import KeyValueInterface from '../common/interfaces/keyValueInterface';
+import KeyValueInterface from '../interfaces/keyValueInterface';
 
 /**
  * QueryStringParser

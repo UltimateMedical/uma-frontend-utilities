@@ -1,6 +1,6 @@
 import QueryStringParser from './parser';
-import isFalsy from '../common/functions/isFalsy';
-import KeyValueInterface from '../common/interfaces/keyValueInterface';
+import isFalsy from '../functions/isFalsy';
+import KeyValueInterface from '../interfaces/keyValueInterface';
 import QueryStringParamConfigInterface from './queryStringParamConfigInterface';
 
 /**
