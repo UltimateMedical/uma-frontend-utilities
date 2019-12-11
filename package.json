@@ -17,7 +17,8 @@
   "files": [
     "dist/**/*",
     "index.d.ts",
-    "query-string/**/*"
+    "query-string/**/*",
+    "functions/**/*"
   ],
   "devDependencies": {
     "@babel/core": "^7.6.4",

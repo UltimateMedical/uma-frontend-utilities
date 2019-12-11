@@ -7,6 +7,8 @@ const common = {
     'query-string/index': path.resolve(__dirname, '../src/query-string/'),
     'query-string/builder': path.resolve(__dirname, '../src/query-string/builder'),
     'query-string/parser': path.resolve(__dirname, '../src/query-string/parser'),
+    'functions/index': path.resolve(__dirname, '../src/functions/'),
+    'functions/isFalsy': path.resolve(__dirname, '../src/functions/isFalsy')
   },
   module: {
     rules: [
