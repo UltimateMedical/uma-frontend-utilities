@@ -4,7 +4,7 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const common = {
   mode: 'production',
   entry: {
-    index: path.resolve(__dirname, '../src/index.ts'),
+    index: path.resolve(__dirname, '../src/'),
     'query-string/index': path.resolve(__dirname, '../src/query-string/'),
     'query-string/builder': path.resolve(__dirname, '../src/query-string/builder'),
     'query-string/parser': path.resolve(__dirname, '../src/query-string/parser'),
