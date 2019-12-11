@@ -1,7 +1,7 @@
 {
   "name": "uma-utils",
   "license": "MIT",
-  "version": "0.2.0-beta.3",
+  "version": "0.2.0-beta.4",
   "description": "A collection of frontend utilities that we hope are useful.",
   "repository": {
     "type": "git",
