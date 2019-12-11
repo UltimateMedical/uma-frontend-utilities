@@ -34,22 +34,23 @@ const common = {
   },
 };
 
-const cjs2 = {
-  output: {
-    path: path.resolve(__dirname, '../dist/cjs2'),
-    filename: '[name].js',
-    library: 'UmaUtils',
-    libraryTarget: 'commonjs2'
+const generateOutput = (libtar, dirname) => {
+  return {
+    output: {
+      path: path.resolve(__dirname, `../dist/${dirname}`),
+      filename: '[name].js',
+      library: 'UmaUtils',
+      libraryTarget: libtar
+    }
   }
+}
+
+const cjs2 = {
+  ...generateOutput('commonjs2', 'cjs2')
 };
 
 const umd = {
-  output: {
-    path: path.resolve(__dirname, '../dist/umd'),
-    filename: '[name].js',
-    library: 'UmaUtils',
-    libraryTarget: 'umd'
-  }
+  ...generateOutput('umd', 'umd')
 };
 
 module.exports = [

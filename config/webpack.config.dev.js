@@ -5,13 +5,12 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 module.exports = {
   mode: 'development',
   entry: {
-    main: path.resolve(__dirname, '../src/index.js'),
-    'query-string': path.resolve(__dirname, '../src/query-string'),
+    index: path.resolve(__dirname, '../src/index.js'),
   },
   devtool: 'inline-source-map',
   output: {
     path: path.resolve(__dirname, 'dist'),
-    filename: '[name]/index.js'
+    filename: '[name].js'
   },
   module: {
     rules: [
