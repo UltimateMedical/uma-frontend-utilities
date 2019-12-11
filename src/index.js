@@ -1,1 +1,1 @@
-export * from './query-string-utils';
+export * from './query-string';

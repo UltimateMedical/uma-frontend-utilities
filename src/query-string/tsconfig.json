@@ -6,8 +6,8 @@
     "sourceMap": true,
     "declaration": true,
     "noImplicitAny": true,
-    "outDir": "./dist/",
+    "outDir": "../../dist/cjs2/query-string",
   },
-  "include": [ "./src/**/*" ],
-  "exclude": [ "./src/**/*.test.ts" ]
+  "include": [ "./**/*" ],
+  "exclude": [ "./**/*.test.ts" ]
 }

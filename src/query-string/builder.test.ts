@@ -1,4 +1,4 @@
-import { QueryStringBuilder } from './QueryStringBuilder';
+import QueryStringBuilder from './builder';
 import { QueryStringParamConfig } from './contracts';
 
 let expected = '',

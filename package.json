@@ -33,10 +33,11 @@
   },
   "scripts": {
     "build": "webpack --mode production --config ./config/webpack.config.prod.js",
-    "develop": "webpack-dev-server --open --mode development",
+    "develop": "webpack-dev-server --open --mode development --config ./config/webpack.config.dev.js",
     "test": "jest",
-    "prepare": "npm run build",
+    "prepare": "npm run build && mv ./dist/cjs2/* . && rmdir ./dist/cjs2",
     "preversion": "npm test",
     "postversion": "git push && git push --tags"
-  }
+  },
+  "dependencies": {}
 }

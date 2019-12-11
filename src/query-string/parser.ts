@@ -53,4 +53,4 @@ class QueryStringParser {
 
 }
 
-export { QueryStringParser };
+export default QueryStringParser;
