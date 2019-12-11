@@ -23,7 +23,7 @@ const common = {
   },
   plugins: [
     new CleanWebpackPlugin({
-      cleanOnceBeforeBuildPatterns: [path.resolve(__dirname, '../dist')],
+      cleanOnceBeforeBuildPatterns: [path.resolve(__dirname, './dist')],
     })
   ],
   stats: "errors-only",
