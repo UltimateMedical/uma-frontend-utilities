@@ -13,8 +13,7 @@
       "email": "austin.j.herman@gmail.com"
     }
   ],
-  "main": "dist/cjs/all.js",
-  "module": "dist/cjs2/all.js",
+  "main": "index.js",
   "devDependencies": {
     "@babel/core": "^7.6.4",
     "@babel/preset-env": "^7.6.3",
