@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "target": "es5",
+    "strict": true,
+    "sourceMap": true,
+    "declaration": true,
+    "noImplicitAny": true,
+    "outDir": "./dist/cjs2"
+  },
+  "include": [ "./src/**/*" ],
+  "exclude": [ "./src/**/*.test.ts", "./src/interfaces/**/*" ]
+}
