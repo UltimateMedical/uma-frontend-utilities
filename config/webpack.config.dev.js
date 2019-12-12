@@ -3,15 +3,14 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
 module.exports = {
-  mode: process.env.NODE_ENV || 'production',
+  mode: 'development',
   entry: {
-    main: './src/index.js'
+    index: path.resolve(__dirname, '../src/index.js'),
   },
   devtool: 'inline-source-map',
   output: {
     path: path.resolve(__dirname, 'dist'),
-    filename: '[name].min.js',
-    libraryTarget: 'commonjs',
+    filename: '[name].js'
   },
   module: {
     rules: [
@@ -27,11 +26,6 @@ module.exports = {
   },
   devServer: {
     contentBase: './dist',
-  },
-  optimization: {
-    splitChunks: {
-      chunks: 'all'
-    }
   },
   plugins: [
     new CleanWebpackPlugin(),

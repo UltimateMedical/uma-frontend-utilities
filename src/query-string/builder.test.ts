@@ -1,9 +1,9 @@
-import { QueryStringBuilder } from './QueryStringBuilder';
-import { QueryStringParamConfig } from './contracts';
+import QueryStringBuilder from './builder';
+import queryStringParamConfigInterface from './queryStringParamConfigInterface';
 
 let expected = '',
     queryString:string,
-    configs:Array<QueryStringParamConfig> = [];
+    configs:Array<queryStringParamConfigInterface> = [];
 
 beforeEach(() => {
   configs = [];
@@ -16,20 +16,20 @@ test('forms a valid query string from config object', () => {
   configs = [
     {
       key: 'por',
-      defaultValue: 'tillos'
+      default: 'tillos'
     },
     {
       key: 'la',
-      defaultValue: 'segunda'
+      default: 'segunda'
     },
     {
       key: 'wrights',
-      defaultValue: 'bakery'
+      default: 'bakery'
     }
   ];
   
   expected = '?por=tillos&la=segunda&wrights=bakery';
-  queryString = new QueryStringBuilder().withConfig(configs).build().getString();
+  queryString = new QueryStringBuilder(configs).build().getString();
   expect(queryString).toBe(expected);
 });
 
@@ -38,12 +38,12 @@ test('does not encode special chars', () => {
   configs = [
     {
       key: ' s p a c e s     ',
-      defaultValue: ' s   p   a   c   e   s  '
+      default: ' s   p   a   c   e   s  '
     }
   ];
 
   expected = '? s p a c e s     = s   p   a   c   e   s  '
-  queryString = new QueryStringBuilder().withConfig(configs).build().getString();
+  queryString = new QueryStringBuilder(configs).build().getString();
   expect(queryString).toBe(expected);
 });
 
@@ -52,16 +52,16 @@ test('handles non string types', () => {
   configs = [
     {
       key: 'debug',
-      defaultValue: true
+      default: true
     },
     {
       key: 'portillos_rating',
-      defaultValue: 10
+      default: 10
     },
   ];
 
   expected = '?debug=true&portillos_rating=10';
-  queryString = new QueryStringBuilder().withConfig(configs).build().getString();
+  queryString = new QueryStringBuilder(configs).build().getString();
   expect(queryString).toBe(expected);
 });
 
@@ -70,23 +70,23 @@ test('doesn\'t omit falsy values by default', () => {
   configs = [
     {
       key: 'should-be-false',
-      defaultValue: false
+      default: false
     },
     {
       key: 'should-be-null',
-      defaultValue: null
+      default: null
     },
     {
       key: 'should-be-0',
-      defaultValue: 0
+      default: 0
     },
     {
       key: 'should-be-undefined',
-      defaultValue: 'undefined'
+      default: 'undefined'
     },
     {
       key: 'should-have-no-value',
-      defaultValue: ''
+      default: ''
     },
     {
       key: 'should-have-no-value-again',
@@ -94,7 +94,7 @@ test('doesn\'t omit falsy values by default', () => {
   ];
   
   expected = '?should-be-false=false&should-be-null=null&should-be-0=0&should-be-undefined=undefined&should-have-no-value&should-have-no-value-again';
-  queryString = new QueryStringBuilder().withConfig(configs).build().getString();
+  queryString = new QueryStringBuilder(configs).build().getString();
   expect(queryString).toBe(expected);
 });
 
@@ -103,37 +103,37 @@ test('omits falsy values if specified', () => {
   configs = [
     {
       key: 'shouldn\'t-be-in-query-string-0',
-      excludeIfFalsyValue: true
+      excludeIfFalsy: true
     },
     {
       key: 'shouldn\'t-be-in-query-string-1',
-      defaultValue: '',
-      excludeIfFalsyValue: true
+      default: '',
+      excludeIfFalsy: true
     },
     {
       key: 'shouldn\'t-be-in-query-string-2',
-      defaultValue: false,
-      excludeIfFalsyValue: true
+      default: false,
+      excludeIfFalsy: true
     },
     {
       key: 'shouldn\'t-be-in-query-string-3',
-      primaryValue: false,
-      excludeIfFalsyValue: true
+      primary: false,
+      excludeIfFalsy: true
     },
     {
       key: 'sbiqs-0',
-      primaryValue: false,
-      defaultValue: false,
-      excludeIfFalsyValue: {
+      primary: false,
+      default: false,
+      excludeIfFalsy: {
         primary: true,
         default: false
       }
     },
     {
       key: 'sbiqs-1',
-      primaryValue: false,
-      defaultValue: false,
-      excludeIfFalsyValue: {
+      primary: false,
+      default: false,
+      excludeIfFalsy: {
         primary: false,
         default: true
       }
@@ -141,7 +141,7 @@ test('omits falsy values if specified', () => {
   ];
 
   expected = '?sbiqs-0=false&sbiqs-1=false';
-  queryString = new QueryStringBuilder().withConfig(configs).build().getString();
+  queryString = new QueryStringBuilder(configs).build().getString();
   expect(queryString).toBe(expected);
 });
 
@@ -149,12 +149,12 @@ test('primary overrides default', () => {
 
   configs = [{
     key: 'test',
-    primaryValue: 'primary',
-    defaultValue: 'default'
+    primary: 'primary',
+    default: 'default'
   }];
 
   expected = '?test=primary';
-  queryString = new QueryStringBuilder().withConfig(configs).build().getString();
+  queryString = new QueryStringBuilder(configs).build().getString();
   expect(queryString).toBe(expected);
 });
 
@@ -163,28 +163,28 @@ test('primary falls back to default if falsy', () => {
   configs = [
     {
       key: 'test1',
-      primaryValue: '',
-      defaultValue: 'default'
+      primary: '',
+      default: 'default'
     },
     {
       key: 'test2',
-      primaryValue: false,
-      defaultValue: 'default'
+      primary: false,
+      default: 'default'
     },
     {
       key: 'test3',
-      primaryValue: null,
-      defaultValue: 'default'
+      primary: null,
+      default: 'default'
     },
     {
       key: 'test4',
-      primaryValue: 'undefined',
-      defaultValue: 'default'
+      primary: 'undefined',
+      default: 'default'
     }
   ];
 
   expected = '?test1=default&test2=default&test3=default&test4=default';
-  queryString = new QueryStringBuilder().withConfig(configs).build().getString();
+  queryString = new QueryStringBuilder(configs).build().getString();
   expect(queryString).toBe(expected);
 });
 
@@ -193,32 +193,32 @@ test('use falsy primaries if you want', () => {
   configs = [
     {
       key: 'test1',
-      primaryValue: '',
-      defaultValue: 'default',
-      excludeIfFalsyValue: false
+      primary: '',
+      default: 'default',
+      excludeIfFalsy: false
     },
     {
       key: 'test2',
-      primaryValue: false,
-      defaultValue: 'default',
-      excludeIfFalsyValue: false
+      primary: false,
+      default: 'default',
+      excludeIfFalsy: false
     },
     {
       key: 'test3',
-      primaryValue: null,
-      defaultValue: 'default',
-      excludeIfFalsyValue: false
+      primary: null,
+      default: 'default',
+      excludeIfFalsy: false
     },
     {
       key: 'test4',
-      primaryValue: 'undefined',
-      defaultValue: 'default',
-      excludeIfFalsyValue: false
+      primary: 'undefined',
+      default: 'default',
+      excludeIfFalsy: false
     }
   ];
 
   expected = '?test1&test2=false&test3=null&test4=undefined';
-  queryString = new QueryStringBuilder().withConfig(configs).build().getString();
+  queryString = new QueryStringBuilder(configs).build().getString();
   expect(queryString).toBe(expected);
 });
 
@@ -229,41 +229,41 @@ test('override query matches take precedence and are [sic]', () => {
   configs = [
     {
       key: 'test',
-      queryStringOverrideSearch: /^test$/gi,
-      primaryValue: 'primary',
-      defaultValue: 'default'
+      override: /^test$/gi,
+      primary: 'primary',
+      default: 'default'
     },
     {
       key: 'test2',
-      queryStringOverrideSearch: /^testtwo$|^test_2$|^test2$/gi,
-      primaryValue: 'primary',
-      defaultValue: 'default'
+      override: /^testtwo$|^test_2$|^test2$/gi,
+      primary: 'primary',
+      default: 'default'
     }
     ,
     {
       key: 'test3',
-      queryStringOverrideSearch: /^test3$/gi,
+      override: /^test3$/gi,
     },
     {
       key: 'test4',
-      queryStringOverrideSearch: /^not_there$/gi,
-      excludeIfFalsyValue: true,
+      override: /^not_there$/gi,
+      excludeIfFalsy: true,
     },
     {
       key: 'test5',
-      queryStringOverrideSearch: /^not_there_with_primary$/gi,
-      primaryValue: 'primary',
-      defaultValue: 'default'
+      override: /^not_there_with_primary$/gi,
+      primary: 'primary',
+      default: 'default'
     }
     ,
     {
       key: 'test6',
-      queryStringOverrideSearch: /^not_there_with_default$/gi,
-      defaultValue: 'default'
+      override: /^not_there_with_default$/gi,
+      default: 'default'
     }
   ];
 
   expected = '?test= `c h i p o t l e` &test2=king_coop&test3=pdq&test5=primary&test6=default'
-  queryString = new QueryStringBuilder().withConfig(configs).withOverrides(overrideQueryString).build().getString();
+  queryString = new QueryStringBuilder(configs).withOverrides(overrideQueryString).build().getString();
   expect(queryString).toBe(expected);
 });
