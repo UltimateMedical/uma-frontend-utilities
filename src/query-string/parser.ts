@@ -5,7 +5,7 @@ import KeyValueInterface from '../interfaces/keyValueInterface';
  * 
  * @since 0.0.1
  */
-class QueryStringParser {
+export default class QueryStringParser {
 
   /**
    * queryString
@@ -112,5 +112,3 @@ class QueryStringParser {
   }
 
 }
-
-export default QueryStringParser;

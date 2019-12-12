@@ -8,7 +8,7 @@ import QueryStringParamConfigInterface from './queryStringParamConfigInterface';
  * 
  * @since 0.0.1
  */
-class QueryStringBuilder {
+export default class QueryStringBuilder {
 
 
   /**
@@ -243,5 +243,3 @@ class QueryStringBuilder {
   }
 
 }
-
-export default QueryStringBuilder;

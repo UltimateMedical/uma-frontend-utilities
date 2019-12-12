@@ -1,7 +1,2 @@
-import QueryStringParser from './parser';
-import QueryStringBuilder from './builder';
-
-export {
-  QueryStringParser,
-  QueryStringBuilder
-}
+export * from './parser';
+export * from './builder';
