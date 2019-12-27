@@ -1,6 +1,6 @@
 # UMA Frontend Utilities
-Welcome. Here's the repo for UMA's frontend utilities. Hopefully there's something
-useful in here...
+Welcome. Here's the repo for UMA's frontend utilities. Hopefully there's something useful in here...
+We use this repo as a place to store shared functionality between UMA sites.
 
 ## Contributing
 If you would like to contribute to this propject, there are just a few steps 
