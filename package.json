@@ -11,6 +11,10 @@
     {
       "name": "Austin Herman",
       "email": "austin.j.herman@gmail.com"
+    },
+    {
+      "name": "John Cooley",
+      "email": "johndavidcooley@gmail.com"
     }
   ],
   "main": "index.js",
