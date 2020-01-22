@@ -17,7 +17,7 @@
       "email": "johndavidcooley@gmail.com"
     }
   ],
-  "main": "index.js",
+  "main": "dist/index.js",
   "files": [
     "dist/**/*"
   ],
@@ -45,8 +45,7 @@
     "test": "jest",
     "prepare": "npm run build",
     "preversion": "npm test",
-    "postversion": "git push && git push --tags",
-    "postinstall": "cp ./dist/index.js index.js"
+    "postversion": "git push && git push --tags"
   },
   "dependencies": {}
 }
