@@ -19,10 +19,7 @@
   ],
   "main": "index.js",
   "files": [
-    "dist/**/*",
-    "index.d.ts",
-    "query-string/**/*",
-    "functions/**/*"
+    "dist/**/*"
   ],
   "devDependencies": {
     "@babel/core": "^7.6.4",
@@ -46,7 +43,7 @@
     "develop": "webpack-dev-server --open --mode development --config ./config/webpack.config.dev.js",
     "docs": "rm -rf ./docs && typedoc --out docs src --mode file --excludeExternals --exclude ./src/.ideas ./src/**/*.test.ts --excludeNotExported",
     "test": "jest",
-    "prepare": "npm run build && cp -a ./dist/cjs2/. .",
+    "prepare": "npm run build",
     "preversion": "npm test",
     "postversion": "git push && git push --tags"
   },

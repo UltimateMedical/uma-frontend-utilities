@@ -1,4 +1,5 @@
 const path = require('path');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
 const common = {
   mode: 'production',
@@ -28,12 +29,15 @@ const common = {
       chunks: 'all'
     }
   },
+  plugins: [
+    new CleanWebpackPlugin()
+  ]
 };
 
 const generateOutput = (libtar, dirname) => {
   return {
     output: {
-      path: path.resolve(__dirname, `../dist/${dirname}`),
+      path: path.resolve(__dirname, `../dist`),
       filename: '[name].js',
       library: 'UmaUtils',
       libraryTarget: libtar
@@ -45,11 +49,6 @@ const cjs2 = {
   ...generateOutput('commonjs2', 'cjs2')
 };
 
-const umd = {
-  ...generateOutput('umd', 'umd')
-};
-
 module.exports = [
   {...common, ...cjs2},
-  {...common, ...umd}
 ];
