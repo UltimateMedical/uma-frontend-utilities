@@ -46,7 +46,7 @@
     "prepare": "npm run build",
     "preversion": "npm test",
     "postversion": "git push && git push --tags",
-    "preinstall": "cp ./dist/index.js index.js"
+    "postinstall": "cp ./dist/index.js index.js"
   },
   "dependencies": {}
 }
