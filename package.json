@@ -17,10 +17,10 @@
       "email": "johndavidcooley@gmail.com"
     }
   ],
-  "main": "dist/index.js",
+  "main": "./dist/index.js",
   "directories": {
-    "query-string": "dist/query-string",
-    "functions": "dist/functions"
+    "query-string": "./dist/query-string",
+    "functions": "./dist/functions"
   },
   "devDependencies": {
     "@babel/core": "^7.6.4",
