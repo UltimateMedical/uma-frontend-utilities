@@ -109,3 +109,80 @@ test('.get() method returns one value', () => {
   expect(parsedQuery).toEqual(null);
 
 });
+
+test(".get() method takes a default and returns it if the key isn't found", () => {
+
+  let queryString,
+      value;
+
+  const expected = 'default';
+
+  queryString = "?testValue=test";
+  value = new QueryStringParser(queryString).get('notThere', 'default');
+
+  expect(value).toEqual(expected);
+})
+
+test(".get() method default doesn't override value in query string", () => {
+
+  let queryString,
+      value;
+
+  const expected = 'test';
+
+  queryString = "?testValue=test";
+  value = new QueryStringParser(queryString).get('testValue', 'default');
+
+  expect(value).toEqual(expected);
+});
+
+test('.get() method default works with empty query strings', () => {
+  let queryString,
+      value;
+
+  const expected = 'default';
+
+  queryString = "";
+  value = new QueryStringParser(queryString).get('test', 'default');
+
+  expect(value).toEqual(expected);
+});
+
+test(".get() method default handles booleans", () => {
+
+  let queryString,
+      value;
+
+  const expected = true;
+
+  queryString = "";
+  value = new QueryStringParser(queryString).get('testValue', true);
+
+  expect(value).toEqual(expected);
+});
+
+test(".get() method default handles numbers", () => {
+
+  let queryString,
+      value;
+
+  const expected = 0;
+
+  queryString = "";
+  value = new QueryStringParser(queryString).get('testValue', 0);
+
+  expect(value).toEqual(expected);
+});
+
+test(".get() method default handles undefined", () => {
+
+  let queryString,
+      value;
+
+  const expected = undefined;
+
+  queryString = "";
+  value = new QueryStringParser(queryString).get('testValue', undefined);
+
+  expect(value).toEqual(expected);
+});
