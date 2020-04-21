@@ -58,12 +58,12 @@ export default class QueryStringParser {
    * Get a value within the query string by its key.
    * 
    * @method
-   * @param {string|null} key - The key of the desired value. If the key does not
+   * @param {string} key - The key of the desired value. If the key does not
    * exist in the query string, return null.
-   * @returns {KeyValueInterface[]} - The parsed query string represented
-   * as an array of key/value pairs.
+   * @param {string} fallback - Optional argument. Specify a fallback value if the key isn't fount in the query string.
+   * @returns {string|null} - The value for the provided key, the passed default, or null.
    */
-  public get(key:string):string|null {
+  public get(key:string, fallback?:any):string|null {
     let result = this.keyValuePairs.filter(queryObject => {
       return queryObject.key === key;
     });
@@ -72,6 +72,9 @@ export default class QueryStringParser {
       if(lastItem) {
         return lastItem.value;
       }
+    }
+    if(arguments.length > 1) {
+      return fallback;
     }
     return null;
   }
