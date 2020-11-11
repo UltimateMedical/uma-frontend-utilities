@@ -1,7 +1,7 @@
 {
   "name": "@ultimatemedical/uma-utils",
   "license": "MIT",
-  "version": "0.4.1",
+  "version": "1.0.0",
   "description": "A collection of frontend utilities that we hope are useful.",
   "repository": {
     "type": "git",
@@ -48,5 +48,7 @@
     "postversion": "git push && git push --tags && npm publish"
   },
   "dependencies": {},
-  "publishConfig": { "registry": "https://npm.pkg.github.com/" }
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/"
+  }
 }
