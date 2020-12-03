@@ -106,7 +106,7 @@ export default class QueryStringParser {
 
       paramStrings = paramString.split('=');
       paramObject.key = paramStrings[0];
-      paramObject.value = paramStrings[1] || undefined;
+      paramObject.value = paramStrings[1] || "";
       return paramObject;
     });
 

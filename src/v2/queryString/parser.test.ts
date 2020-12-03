@@ -38,7 +38,7 @@ test('turns a query string into an an array of objects with key/value pairs', ()
 
 });
 
-test('creates an object with undefined as value for a URL param with no value', () => {
+test('creates an object with empty string as value for a URL param with no value', () => {
 
   let queryString: string,
       parsedQuery: KeyValueSchema[];
@@ -46,7 +46,7 @@ test('creates an object with undefined as value for a URL param with no value', 
   const expected: KeyValueSchema[] = [
     {
       key: "portillos",
-      value: undefined
+      value: ""
     },
     {
       key: "daily",
@@ -54,7 +54,7 @@ test('creates an object with undefined as value for a URL param with no value', 
     },
     {
       key: "chicagopaulies",
-      value: undefined
+      value: ""
     }
   ];
 
