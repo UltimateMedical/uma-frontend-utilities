@@ -5,11 +5,10 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 module.exports = {
   mode: 'development',
   entry: {
-    index: path.resolve(__dirname, '../src/index.ts'),
+    index: path.resolve(__dirname, '../dev/app.ts'),
   },
   devtool: 'inline-source-map',
   output: {
-    path: path.resolve(__dirname, 'dist'),
     filename: '[name].js'
   },
   module: {
@@ -25,11 +24,15 @@ module.exports = {
     extensions: ['.tsx', '.ts', '.js'],
   },
   devServer: {
-    contentBase: './dist',
+    port: 8000
   },
   plugins: [
-    new CleanWebpackPlugin(),
-    new HtmlWebpackPlugin()
+    //new CleanWebpackPlugin(),
+    new HtmlWebpackPlugin({
+      title: 'UMA Utils Sandbox',
+      // Load a custom template (lodash by default)
+      template: path.resolve(__dirname, 'index.html')
+    })
   ],
   stats: "errors-only"
 };
