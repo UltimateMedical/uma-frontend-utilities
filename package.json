@@ -1,7 +1,7 @@
 {
   "name": "@ultimatemedical/uma-utils",
   "license": "MIT",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "A collection of frontend utilities that we hope are useful.",
   "repository": {
     "type": "git",
